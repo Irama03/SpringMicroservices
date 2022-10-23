@@ -17,8 +17,6 @@ public class LessorServiceImpl implements LessorService {
 
     private final LessorRepository lessorRepository;
 
-    // TODO: add processing of string values
-
     @Autowired
     public LessorServiceImpl(LessorMapper lessorMapper, LessorRepository lessorRepository) {
         this.lessorMapper = lessorMapper;

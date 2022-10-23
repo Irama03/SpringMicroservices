@@ -3,9 +3,14 @@ package com.example.businessLogic.controllers;
 import com.example.businessLogic.dtos.LessorPostDto;
 import com.example.businessLogic.models.Lessor;
 import com.example.businessLogic.services.LessorService;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController(value = "api/lessors")
+import javax.validation.Valid;
+
+@RestController
+@RequestMapping(path = "/api/lessors")
+@Validated
 public class LessorController {
 
     private final LessorService lessorService;
@@ -25,12 +30,13 @@ public class LessorController {
     }
 
     @PostMapping
-    public Lessor create(@RequestBody LessorPostDto lessor) {
+    public Lessor create(@Valid @RequestBody LessorPostDto lessor) {
+        System.out.println(lessor);
         return lessorService.create(lessor);
     }
 
     @PutMapping(path = "/{id}")
-    public Lessor update(@PathVariable long id, @RequestBody LessorPostDto lessor) {
+    public Lessor update(@PathVariable long id, @Valid @RequestBody LessorPostDto lessor) {
         return lessorService.updateById(id, lessor);
     }
 
@@ -43,9 +49,6 @@ public class LessorController {
     public void deleteAll() {
         lessorService.deleteAll();
     }
-
-
-
 
 
 
