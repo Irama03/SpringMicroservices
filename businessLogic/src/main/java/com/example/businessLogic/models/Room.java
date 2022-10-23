@@ -3,9 +3,13 @@ package com.example.businessLogic.models;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -15,6 +19,7 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "room_id")
     private Long id;
 
     @NotNull
@@ -46,6 +51,10 @@ public class Room {
 
     @Column
     private Integer capacity;
+
+    @OneToMany(mappedBy = "room")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private Set<Booking> bookings = new HashSet<>();
 
     public Room(String name, RoomType type, String description, Lessor lessor,
                 String address, String city, Double price, Integer capacity) {
