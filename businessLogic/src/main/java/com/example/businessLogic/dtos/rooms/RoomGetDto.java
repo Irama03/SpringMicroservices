@@ -1,6 +1,6 @@
 package com.example.businessLogic.dtos.rooms;
 
-import com.example.businessLogic.dtos.LessorSlimGetDto;
+import com.example.businessLogic.dtos.lessor.LessorSlimGetDto;
 import com.example.businessLogic.models.RoomType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

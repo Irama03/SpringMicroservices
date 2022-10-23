@@ -1,6 +1,6 @@
 package com.example.businessLogic.dtos.mappers;
 
-import com.example.businessLogic.dtos.LessorPostDto;
+import com.example.businessLogic.dtos.lessor.LessorPostDto;
 import com.example.businessLogic.models.Lessor;
 import org.mapstruct.Mapper;
 

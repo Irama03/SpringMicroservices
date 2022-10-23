@@ -1,4 +1,4 @@
-package com.example.businessLogic.dtos;
+package com.example.businessLogic.dtos.lessor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

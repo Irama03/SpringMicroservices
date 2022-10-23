@@ -1,6 +1,6 @@
 package com.example.businessLogic.services.implementations;
 
-import com.example.businessLogic.dtos.LessorPostDto;
+import com.example.businessLogic.dtos.lessor.LessorPostDto;
 import com.example.businessLogic.dtos.mappers.LessorMapper;
 import com.example.businessLogic.exceptions.RecordNotFoundException;
 import com.example.businessLogic.exceptions.ValueNotUniqueException;
