@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    env_file: .env
+    container_name: $POSTGRES_CONTAINER_NAME
+    environment:
+      - POSTGRES_USER = $POSTGRES_USER
+      - POSTGRES_PASSWORD = $POSTGRES_PASSWORD
+      - POSTGRES_DB = $POSTGRES_DB
+    ports:
+      - $POSTGRES_LOCAL_PORT:$POSTGRES_DOCKER_PORT
+    volumes:
+      - db:/postgresDB
+  app:
+    depends_on:
+      - postgres
+    image: illiakuznets/business_app
+    container_name: business-app-container
+    env_file: .env
+    ports:
+      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url" : "jdbc:postgresql://$POSTGRES_CONTAINER_NAME:$POSTGRES_DOCKER_PORT/$POSTGRES_DB",
+        "spring.datasource.username" : "$POSTGRES_USER",
+        "spring.datasource.password" : "$POSTGRES_PASSWORD",
+        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+        "spring.jpa.show-sql" : "true",
+        "spring.jpa.hibernate.ddl-auto" : "update"
+      }'
+
+volumes:
+  db:
