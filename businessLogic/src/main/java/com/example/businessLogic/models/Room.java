@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,14 +24,13 @@ public class Room {
     @Column(name = "room_id")
     private Long id;
 
-    @NotNull
+    @NotNull(message = "name is required")
     @Column(nullable = false)
     private String name;
 
     @Enumerated(EnumType.STRING)
     private RoomType type;
 
-    @NotNull
     @Column(nullable = false)
     private String description;
 
@@ -37,19 +38,22 @@ public class Room {
     @JoinColumn(name = "lessor_id")
     private Lessor lessor;
 
-    @NotNull
+    @NotNull(message = "address is required")
     @Column(nullable = false)
     private String address;
 
-    @NotNull
+    @NotNull(message = "city is required")
     @Column(nullable = false, length = 50)
     private String city;
 
-    @NotNull
+    @NotNull(message = "price per day is required")
     @Column(nullable = false)
+    @Min(value = 0, message = "price should be >= 0")
     private Double price;
 
     @Column
+    @Min(value = 1, message = "capacity should be >= 1")
+    @Max(value = 500, message = "capacity should be <= 500")
     private Integer capacity;
 
     @OneToMany(mappedBy = "room")

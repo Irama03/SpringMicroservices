@@ -13,10 +13,12 @@ import org.springframework.stereotype.Service;
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
+    private final LessorServiceImpl lessorService;
 
     @Autowired
-    public RoomServiceImpl(RoomRepository roomRepository) {
+    public RoomServiceImpl(RoomRepository roomRepository, LessorServiceImpl lessorService) {
         this.roomRepository = roomRepository;
+        this.lessorService = lessorService;
     }
 
     @Override
@@ -36,10 +38,11 @@ public class RoomServiceImpl implements RoomService {
                 .orElseThrow(() -> new RecordNotFoundException(Room.class, "id", id));
     }
 
-    // TODO: add processing of string values
     @Override
     public Room addRoom(Room room) {
         nameShouldBeUnique(room.getName());
+        Lessor lessor = lessorService.getById(room.getLessor().getId());
+        room.setLessor(lessor);
         return roomRepository.save(room);
     }
 
@@ -49,8 +52,8 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository
                 .findById(id)
                 .map(r -> roomRepository.save(new Room(id, room.getName(), room.getType(),
-                        room.getDescription(), room.getLessor(), room.getAddress(), room.getCity(),
-                        room.getPrice(), room.getCapacity())))
+                        room.getDescription(), lessorService.getById(r.getLessor().getId()),
+                        room.getAddress(), room.getCity(), room.getPrice(), room.getCapacity())))
                 .orElseThrow(() -> new RecordNotFoundException(Lessor.class, "id", id));
     }
 
