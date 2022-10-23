@@ -1,6 +1,5 @@
 package com.example.businessLogic.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,11 +7,10 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
-import java.util.Set;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,7 +30,7 @@ public class Lessor {
 
     @Column(name = "lessor_email", nullable = false)
     @NotNull(message = "email is required")
-    @Pattern(regexp = "(\\w+[.-]?)*\\w+@(\\w{2,4}\\.)+\\w{2,4}", message = "email format is incorrect")
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "email format is incorrect")
     private String email;
 
     @Column(name = "lessor_phone", nullable = false)

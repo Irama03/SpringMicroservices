@@ -8,6 +8,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,26 +23,29 @@ public class Client {
     @Column(name = "client_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "client_name", nullable = false)
     @NotNull
+    @Pattern(regexp = "([a-zA-Z]+ )*[a-zA-Z]+", message = "name should consist of words separated by a space")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "email format is incorrect")
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "client_phone",nullable = false, unique = true)
     @NotNull
-    private String phoneNumber;
+    @Pattern(regexp = "(\\+\\d{12})|(\\d{10})", message = "phone format is incorrect")
+    private String phone;
 
     @OneToMany(mappedBy = "client")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Set<Booking> bookings = new HashSet<>();
 
-    public Client(String name, String email, String phoneNumber) {
+    public Client(String name, String email, String phone) {
         this.name = name;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
     }
 
 

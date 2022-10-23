@@ -20,7 +20,7 @@ public class LessorPostDto {
 
     @JsonProperty("email")
     @NotNull(message = "email is required")
-    @Pattern(regexp = "(\\w+[.-]?)*\\w+@(\\w{2,4}\\.)+\\w{2,4}", message = "email format is incorrect")
+    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "email format is incorrect")
     private String email;
 
     @JsonProperty("phone")
