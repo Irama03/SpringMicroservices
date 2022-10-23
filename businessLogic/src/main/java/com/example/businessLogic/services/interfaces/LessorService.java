@@ -1,4 +1,4 @@
-package com.example.businessLogic.services;
+package com.example.businessLogic.services.interfaces;
 
 import com.example.businessLogic.dtos.LessorPostDto;
 import com.example.businessLogic.models.Lessor;

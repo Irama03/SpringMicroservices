@@ -1,4 +1,4 @@
-package com.example.businessLogic.services;
+package com.example.businessLogic.services.implementations;
 
 import com.example.businessLogic.dtos.LessorPostDto;
 import com.example.businessLogic.dtos.mappers.LessorMapper;
@@ -6,6 +6,7 @@ import com.example.businessLogic.exceptions.RecordNotFoundException;
 import com.example.businessLogic.exceptions.ValueNotUniqueException;
 import com.example.businessLogic.models.Lessor;
 import com.example.businessLogic.repositories.LessorRepository;
+import com.example.businessLogic.services.interfaces.LessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

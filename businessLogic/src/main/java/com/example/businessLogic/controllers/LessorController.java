@@ -4,6 +4,7 @@ import com.example.businessLogic.dtos.LessorPostDto;
 import com.example.businessLogic.models.Lessor;
 import com.example.businessLogic.services.LessorService;
 import org.springframework.validation.annotation.Validated;
+import com.example.businessLogic.services.interfaces.LessorService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
