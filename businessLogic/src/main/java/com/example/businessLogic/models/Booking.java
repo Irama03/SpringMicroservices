@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -32,6 +33,7 @@ public class Booking {
 
     @Column(nullable = false)
     @NotNull
+    @Min(value = 0, message = "price should be >= 0")
     private Double price;
 
     @Column(nullable = false, name = "start_date")
@@ -47,6 +49,9 @@ public class Booking {
     @Column(nullable = false, name = "creation_date")
     @Temporal(TemporalType.DATE)
     @NotNull
-    private Date creationDate;
+    private Date creationDate = new Date();
+
+    @Enumerated(EnumType.STRING)
+    private BookingStatus status = BookingStatus.NEW;
 
 }

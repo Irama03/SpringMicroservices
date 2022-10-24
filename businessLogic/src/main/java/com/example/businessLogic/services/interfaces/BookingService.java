@@ -1,5 +1,6 @@
 package com.example.businessLogic.services.interfaces;
 
+import com.example.businessLogic.dtos.bookings.BookingPutDto;
 import com.example.businessLogic.models.Booking;
 
 public interface BookingService {
@@ -12,5 +13,5 @@ public interface BookingService {
 
     void deleteBooking(Long id);
 
-    //updateBooking ?
+    Booking updateBooking(Long id, BookingPutDto dto);
 }

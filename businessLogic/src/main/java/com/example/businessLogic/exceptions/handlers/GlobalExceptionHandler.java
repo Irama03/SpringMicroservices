@@ -2,6 +2,7 @@ package com.example.businessLogic.exceptions.handlers;
 
 import com.example.businessLogic.exceptions.RecordNotFoundException;
 import com.example.businessLogic.exceptions.ValueNotUniqueException;
+import com.example.businessLogic.exceptions.booking.IllegalDateException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +48,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {ValueNotUniqueException.class})
     public ResponseEntity<Map<String,String>> handleBadRequestException(Exception e){
+        return new ResponseEntity<>(makeSimpleExceptionResponse(e),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {IllegalDateException.class})
+    public ResponseEntity<Map<String,String>> handleIllegalDateException(Exception e){
         return new ResponseEntity<>(makeSimpleExceptionResponse(e),HttpStatus.BAD_REQUEST);
     }
 

@@ -84,4 +84,8 @@ public class Room {
         this.price = price;
         this.capacity = capacity;
     }
+
+    public Room(Long id) {
+        this.id = id;
+    }
 }
