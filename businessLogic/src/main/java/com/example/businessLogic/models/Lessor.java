@@ -30,7 +30,7 @@ public class Lessor {
 
     @Column(name = "lessor_email", nullable = false)
     @NotNull(message = "email is required")
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "email format is incorrect")
+    @Pattern(regexp = "(\\w+\\.?)*\\w+@(\\w{2,5}\\.)+\\w{2,5}", message = "email format is incorrect")
     private String email;
 
     @Column(name = "lessor_phone", nullable = false)

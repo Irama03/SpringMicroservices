@@ -30,7 +30,7 @@ public class Client {
 
     @Column(nullable = false, unique = true)
     @NotNull
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "email format is incorrect")
+    @Pattern(regexp = "(\\w+\\.?)*\\w+@(\\w{2,5}\\.)+\\w{2,5}", message = "email format is incorrect")
     private String email;
 
     @Column(name = "client_phone",nullable = false, unique = true)

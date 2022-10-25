@@ -1,6 +1,6 @@
 package com.example.businessLogic.controllers;
 
-import com.example.businessLogic.dtos.LessorPostDto;
+import com.example.businessLogic.dtos.lessor.LessorPostDto;
 import com.example.businessLogic.models.Lessor;
 import org.springframework.validation.annotation.Validated;
 import com.example.businessLogic.services.interfaces.LessorService;
