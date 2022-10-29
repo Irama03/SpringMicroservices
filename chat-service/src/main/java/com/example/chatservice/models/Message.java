@@ -1,9 +1,14 @@
-package com.example.chatservice.model;
+package com.example.chatservice.models;
+
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@Getter
+@Setter
 public class Message {
 
     @Id

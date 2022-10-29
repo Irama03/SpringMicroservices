@@ -1,4 +1,4 @@
-package com.example.chatservice.model;
+package com.example.chatservice.models;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
