@@ -1,7 +1,10 @@
 package com.example.businessLogic.controllers;
 
+import com.example.businessLogic.dtos.clients.ClientSlimGetDto;
+import com.example.businessLogic.dtos.mappers.ClientMapper;
 import com.example.businessLogic.models.Client;
 import com.example.businessLogic.services.interfaces.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +17,12 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    public ClientController(ClientService clientService) {
+    private final ClientMapper mapper;
+
+    @Autowired
+    public ClientController(ClientService clientService, ClientMapper mapper) {
         this.clientService = clientService;
+        this.mapper = mapper;
     }
 
     @GetMapping
@@ -24,8 +31,8 @@ public class ClientController {
     }
 
     @GetMapping(path = "/{id}")
-    public Client getById(@PathVariable long id) {
-        return clientService.getById(id);
+    public ClientSlimGetDto getById(@PathVariable long id) {
+        return mapper.clientToClientSlimGetDto(clientService.getById(id));
     }
 
     @PostMapping
