@@ -1,13 +1,20 @@
 package com.example.chatservice.models;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class ChatParticipationId implements Serializable {
 
-    private long chatId;
+    private Long chatId;
 
-    private long userId;
+    private Long userId;
 
 }
