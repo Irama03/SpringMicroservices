@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  chat:
+    image: hlibkalinichev/chat_service:0.0.2
+    container_name: chat-container
+    environment:
+      SPRING_APPLICATION_JSON: '{
+      "container.name":"business-logic-container",
+      "container.port":"8082"
+      }'
+    ports:
+      - 8081:8081
+  business-logic:
+    image: hlibkalinichev/business_logic:0.0.2
+    container_name: business-logic-container
+    ports:
+      - 8082:8082

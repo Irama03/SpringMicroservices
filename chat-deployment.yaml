@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-deployment
+  labels:
+    app: chat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: chat
+  template:
+    metadata:
+      labels:
+        app: chat
+    spec:
+      containers:
+        - name: chat-container
+          image: hlibkalinichev/chat_service:0.0.2
+          env:
+           - name: SPRING_APPLICATION_JSON
+             value: '{
+      "container.name":"business-logic-service",
+      "container.port":"8082"
+      }'
+          ports:
+            - containerPort: 8081

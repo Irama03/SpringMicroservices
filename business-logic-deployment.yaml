@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: business-logic-deployment
+  labels:
+    app: business-logic
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: business-logic
+  template:
+    metadata:
+      labels:
+        app: business-logic
+    spec:
+      containers:
+        - name: business-logic-container
+          image: hlibkalinichev/business_logic:0.0.2
+          ports:
+            - containerPort: 8082
