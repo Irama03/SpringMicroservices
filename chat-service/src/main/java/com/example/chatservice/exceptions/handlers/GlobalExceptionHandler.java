@@ -1,6 +1,7 @@
 package com.example.chatservice.exceptions.handlers;
 
 import com.example.chatservice.exceptions.RecordNotFoundException;
+import com.example.chatservice.exceptions.UserNotFoundException;
 import com.example.chatservice.exceptions.ValueNotUniqueException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {RecordNotFoundException.class})
+    @ExceptionHandler(value = {RecordNotFoundException.class, UserNotFoundException.class})
     public ResponseEntity<Map<String,String>> handleNotFoundExceptions(Exception e){
         return new ResponseEntity<>(makeSimpleExceptionResponse(e),HttpStatus.NOT_FOUND);
 

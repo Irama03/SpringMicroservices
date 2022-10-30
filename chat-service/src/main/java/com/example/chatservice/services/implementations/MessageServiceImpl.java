@@ -1,5 +1,6 @@
 package com.example.chatservice.services.implementations;
 
+import com.example.chatservice.apiCommunication.BusinessLogicWebClient;
 import com.example.chatservice.exceptions.RecordNotFoundException;
 import com.example.chatservice.models.Chat;
 import com.example.chatservice.models.Message;
@@ -14,10 +15,12 @@ public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
+    private final BusinessLogicWebClient webClient;
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, ChatRepository chatRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository, ChatRepository chatRepository, BusinessLogicWebClient webClient) {
         this.messageRepository = messageRepository;
+        this.webClient = webClient;
         this.chatRepository = chatRepository;
     }
 
@@ -38,6 +41,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public Message addMessage(Message message) {
         //TODO: check senderId
+        webClient.fetchUser(message.getSenderId());
         Chat chat = chatRepository.findById(message.getChat().getId()).orElseThrow(
                 () -> new RecordNotFoundException(Chat.class, "id", message.getChat().getId()));
         message.setChat(chat);
