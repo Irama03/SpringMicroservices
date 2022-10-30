@@ -14,7 +14,7 @@ public class Chat {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @OneToMany(mappedBy = "chat")
     private Set<Message> messages = new HashSet<>();
