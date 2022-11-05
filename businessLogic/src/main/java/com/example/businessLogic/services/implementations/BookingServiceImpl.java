@@ -13,6 +13,9 @@ import com.example.businessLogic.services.interfaces.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
+import java.util.Date;
+
 @Service
 public class BookingServiceImpl implements BookingService {
 
@@ -39,6 +42,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(Booking booking) {
+        //booking.setStartDate(new Date(4, Calendar.NOVEMBER, 2022));
+        //booking.setEndDate(new Date(7, Calendar.NOVEMBER, 2022));
         checkDates(booking);
         Room room = roomService.getRoomById(booking.getRoom().getId());
         Client client = clientService.getById(booking.getClient().getId());
