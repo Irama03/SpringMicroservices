@@ -1,0 +1,2 @@
+INSERT INTO users (user_id, user_name, user_email, user_password, user_role) VALUES (1, 'hlib', 'example1@gmail.com', '12345', 'ADMIN');
+INSERT INTO users (user_id, user_name, user_email, user_password, user_role) VALUES (2, 'vova', 'example2@gmail.com', '11111', 'CLIENT');
