@@ -5,11 +5,10 @@ import com.example.reportservice.models.StatisticsValues;
 import com.example.reportservice.services.interfaces.StatisticsService;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.io.*;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.stream.Stream;
@@ -21,13 +20,27 @@ public class StatisticsServiceImpl implements StatisticsService {
     private final float SMALL_ROW_GAP = 5f;
     private final float BIG_ROW_GAP = 40f;
 
-    @Autowired
-    private BusinessLogicWebClient webClient;
+    private final BusinessLogicWebClient webClient;
+    private volatile boolean allDataGot = false;
+    private Font textFont;
+    private final PdfPTable table;
+
+    public StatisticsServiceImpl(BusinessLogicWebClient webClient) {
+        this.webClient = webClient;
+        this.table = new PdfPTable(6);
+    }
 
     @Override
     public byte[] getStatistics() {
-        Iterable<StatisticsValues> statisticsValuesSet = webClient.fetchDataForStatistics();
-        generateStatistics(statisticsValuesSet);
+        Flux<StatisticsValues> statisticsValuesFlux = webClient.fetchDataForStatistics();
+        statisticsValuesFlux.doOnComplete(() -> {
+            allDataGot = true;
+            System.out.println("All data received");
+        }).subscribe(values -> {
+            System.out.println(values.getName());
+            addOneRow(table, values, textFont);
+        });
+        generateBaseStatisticsFile();
         return getContentOfPDFFile(STATISTICS_FILE_NAME);
     }
 
@@ -47,8 +60,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         return null;
     }
 
-    private void generateStatistics(Iterable<StatisticsValues> statisticsValuesSet) {
+    private void generateBaseStatisticsFile() {
+        System.out.println("Start generating file...");
         try {
+            BaseFont baseFont = BaseFont.createFont("src/main/resources/static/SFNSRounded.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+            Font headerFont = new Font(baseFont, 16);
+            this.textFont = new Font(baseFont, 14);
+
             Document document = new Document(PageSize.A4.rotate());
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(STATISTICS_FILE_NAME));
 
@@ -56,10 +74,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             writer.setPageEvent(event);
 
             document.open();
-
-            BaseFont baseFont = BaseFont.createFont("src/main/resources/static/SFNSRounded.ttf", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-            Font headerFont = new Font(baseFont, 16);
-            Font textFont = new Font(baseFont, 14);
 
             Paragraph p = new Paragraph("Загальний звіт", headerFont);
             p.setAlignment(Element.ALIGN_CENTER);
@@ -70,8 +84,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             p1.setAlignment(Element.ALIGN_LEFT);
             p1.setSpacingAfter(BIG_ROW_GAP);
 
-            //можна додати загальну кількість опрацьованих букінгів
-
             document.add(p);
             document.add(p1);
 
@@ -80,10 +92,12 @@ public class StatisticsServiceImpl implements StatisticsService {
             tableHeader.setSpacingAfter(SMALL_ROW_GAP);
             document.add(tableHeader);
 
-            PdfPTable table = new PdfPTable(6);
             addTableHeader(Stream.of("Id орендодавця", "ПІБ орендодавця", "К-ть завершених бронювань", "К-ть поточних бронювань", "Прибуток орендодавця", "К-ть клієнтів орендодавця"),
                     table, headerFont);
-            addRows(table, statisticsValuesSet, textFont);
+
+            while (!allDataGot) {
+                Thread.onSpinWait();
+            };
 
             table.setWidthPercentage(100);
 
@@ -117,15 +131,13 @@ public class StatisticsServiceImpl implements StatisticsService {
         });
     }
 
-    private void addRows(PdfPTable table, Iterable<StatisticsValues> statisticsValuesSet, Font font) {
-        for (StatisticsValues stV: statisticsValuesSet) {
+    private void addOneRow(PdfPTable table, StatisticsValues stV, Font font) {
             table.addCell(new Phrase(stV.getLessorId() + "", font));
             table.addCell(new Phrase(stV.getName(), font));
             table.addCell(new Phrase(stV.getQuantityOfFinishedBookings() + "", font));
             table.addCell(new Phrase(stV.getQuantityOfBookingsInProgress() + "", font));
             table.addCell(new Phrase(stV.getLessorIncome() + "", font));
             table.addCell(new Phrase(stV.getQuantityOfClients() + "", font));
-        }
     }
 
     public static class PdfHeader extends PdfPageEventHelper {

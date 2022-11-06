@@ -12,8 +12,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class BusinessLogicWebClient {
 
-    @Autowired
-    private WebClient client;
+    private final WebClient client;
+
+    public BusinessLogicWebClient(WebClient client) {
+        this.client = client;
+    }
 
     public ClientSlimGetDto fetchUser(Long userId) {
         return this.client.get()
