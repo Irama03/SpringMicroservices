@@ -31,8 +31,8 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public byte[] getStatistics() {
-        Flux<StatisticsValues> statisticsValuesFlux = webClient.fetchDataForStatistics();
+    public byte[] getStatistics(String authToken) {
+        Flux<StatisticsValues> statisticsValuesFlux = webClient.fetchDataForStatistics(authToken);
         statisticsValuesFlux.doOnComplete(() -> {
             allDataGot = true;
             System.out.println("All data received");

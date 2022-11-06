@@ -23,6 +23,8 @@ public class AsyncCallTest {
     private BusinessLogicWebClient businessLogicWebClient;
     private MockWebServer server;
 
+    private final String ADMIN_JWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IkFETUlOIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2FwaS9sZXNzb3JzIiwiZXhwIjoxNjk5MjE2NDk3fQ.YJxdKh8th1uFcTAH11oCDaaeJRSElbSYgwWZS75VP54";
+
     @BeforeEach
     void setUp() throws IOException {
         server = new MockWebServer();
@@ -60,7 +62,7 @@ public class AsyncCallTest {
                         "]");
         server.enqueue(response);
         //toStream().collect() - evidence of async call
-        List<StatisticsValues> result = businessLogicWebClient.fetchDataForStatistics()
+        List<StatisticsValues> result = businessLogicWebClient.fetchDataForStatistics(ADMIN_JWT)
                 .toStream().collect(Collectors.toList());
 
         assertThat(result.size()).isEqualTo(2);
