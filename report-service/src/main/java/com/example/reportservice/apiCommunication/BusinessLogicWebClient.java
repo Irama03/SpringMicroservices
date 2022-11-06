@@ -11,8 +11,11 @@ import reactor.core.publisher.Flux;
 @Component
 public class BusinessLogicWebClient {
 
-    @Autowired
-    private WebClient client;
+    private final WebClient client;
+
+    public BusinessLogicWebClient(WebClient client) {
+        this.client = client;
+    }
 
     public Flux<StatisticsValues> fetchDataForStatistics() {
         return this.client.get()
