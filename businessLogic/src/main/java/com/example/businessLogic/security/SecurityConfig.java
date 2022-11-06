@@ -24,15 +24,17 @@ public class SecurityConfig {
     // LESSOR token: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IkxFU1NPUiIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4Mi9hcGkvbGVzc29ycyIsImV4cCI6MTY5OTIxNjY3NH0.0R2lCePcEEpaWSuioMqLtKypLLy3vaHtuxvAEO1XHU8
 
     private JwtConfig jwtConfig;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.exceptionHandling().accessDeniedHandler(((request, response, accessDeniedException) -> ResponseHelper.setResponse(response, FORBIDDEN.value(),  new ApiErrorResponse(accessDeniedException.getMessage()))));
+        http.exceptionHandling().accessDeniedHandler((
+                (request, response, accessDeniedException) -> ResponseHelper.setResponse(response, FORBIDDEN.value(),
+                        new ApiErrorResponse(accessDeniedException.getMessage()))));
         http.addFilterBefore(new JwtAuthorizationFilter(jwtConfig.getSecret()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 
 
 }

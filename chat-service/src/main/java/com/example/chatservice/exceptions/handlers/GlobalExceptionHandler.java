@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -19,17 +20,16 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<Map<String,String>> handleInvalidObjectsExceptions(MethodArgumentNotValidException e){
+    public ModelAndView handleInvalidObjectsExceptions(MethodArgumentNotValidException e){
         Map<String,String> map = new HashMap<>();
         map.put("success","false");
         map.put("error",e.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", ")));
-        return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+        return wrapResponseByModelAndView(map,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<Map<String,String>> handleInvalidParamsExceptions(ConstraintViolationException e){
+    public ModelAndView handleInvalidParamsExceptions(ConstraintViolationException e){
         Map<String,String> map = new HashMap<>();
         map.put("success","false");
         StringBuilder s = new StringBuilder();
@@ -37,18 +37,17 @@ public class GlobalExceptionHandler {
             s.append(violation.getMessage()).append('\n');
         }
         map.put("error",s.toString());
-        return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
+        return wrapResponseByModelAndView(map,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {RecordNotFoundException.class, UserNotFoundException.class})
-    public ResponseEntity<Map<String,String>> handleNotFoundExceptions(Exception e){
-        return new ResponseEntity<>(makeSimpleExceptionResponse(e),HttpStatus.NOT_FOUND);
-
+    public ModelAndView handleNotFoundExceptions(Exception e){
+        return getModelAndViewFromException(e,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {ValueNotUniqueException.class})
-    public ResponseEntity<Map<String,String>> handleBadRequestException(Exception e){
-        return new ResponseEntity<>(makeSimpleExceptionResponse(e),HttpStatus.BAD_REQUEST);
+    public ModelAndView handleBadRequestExceptions(Exception e){
+        return getModelAndViewFromException(e,HttpStatus.BAD_REQUEST);
     }
 
     private Map<String, String> makeSimpleExceptionResponse(Exception e) {
@@ -58,6 +57,16 @@ public class GlobalExceptionHandler {
         return map;
     }
 
+    private ModelAndView wrapResponseByModelAndView(Map<String, String> response, HttpStatus status) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("errorPage");
+        mav.addObject("error", response);
+        mav.setStatus(status);
+        return mav;
+    }
 
-
+    private ModelAndView getModelAndViewFromException(Exception e, HttpStatus status) {
+        Map<String, String> response = makeSimpleExceptionResponse(e);
+        return wrapResponseByModelAndView(response, status);
+    }
 }
