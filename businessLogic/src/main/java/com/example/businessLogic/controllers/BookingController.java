@@ -5,6 +5,7 @@ import com.example.businessLogic.dtos.bookings.BookingPostDto;
 import com.example.businessLogic.dtos.bookings.BookingPutDto;
 import com.example.businessLogic.dtos.mappers.BookingMapper;
 import com.example.businessLogic.services.interfaces.BookingService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,26 +25,31 @@ public class BookingController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
     public Iterable<BookingGetDto> getAll() {
         return mapper.bookingsToBookingsGetDto(bookingService.getAll());
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public BookingGetDto addBooking(@Valid @RequestBody BookingPostDto dto) {
         return mapper.bookingToBookingGetDto(bookingService.createBooking(mapper.bookingPostDtoToBooking(dto)));
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
     public BookingGetDto getBooking(@PathVariable(name = "id") Long id) {
         return mapper.bookingToBookingGetDto(bookingService.getBookingById(id));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
     public BookingGetDto updateStatus(@PathVariable(name = "id") Long id, @Valid @RequestBody BookingPutDto dto) {
         return mapper.bookingToBookingGetDto(bookingService.updateBooking(id, dto));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
     public void deleteBooking(@PathVariable(name = "id") Long id) {
         this.bookingService.deleteBooking(id);
     }

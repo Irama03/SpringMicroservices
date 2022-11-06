@@ -1,6 +1,7 @@
 package com.example.businessLogic.dtos.lessor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
 public class LessorPostDto {
 
     @JsonProperty("name")

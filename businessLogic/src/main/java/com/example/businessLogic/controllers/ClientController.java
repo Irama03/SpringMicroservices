@@ -5,6 +5,7 @@ import com.example.businessLogic.dtos.mappers.ClientMapper;
 import com.example.businessLogic.models.Client;
 import com.example.businessLogic.services.interfaces.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,32 +27,38 @@ public class ClientController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Iterable<Client> getAll() {
         return clientService.getAll();
     }
 
     @GetMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','LESSOR')")
     public ClientSlimGetDto getById(@PathVariable long id) {
         return mapper.clientToClientSlimGetDto(clientService.getById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public Client create(@Valid @RequestBody Client client) {
         System.out.println(client);
         return clientService.create(client);
     }
 
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public Client update(@PathVariable Long id, @Valid @RequestBody Client client) {
         return clientService.updateById(id, client);
     }
 
     @DeleteMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public void deleteById(@PathVariable Long id) {
         clientService.deleteById(id);
     }
 
     @DeleteMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void deleteAll() {
         clientService.deleteAll();
     }
