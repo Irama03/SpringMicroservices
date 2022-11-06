@@ -1,6 +1,6 @@
 package com.example.reportservice.security;
 
-import com.example.reportservice.config.JwtConfig;
+import com.example.reportservice.configurations.JwtConfig;
 import com.example.reportservice.helpers.ResponseHelper;
 import com.example.reportservice.models.ApiErrorResponse;
 import lombok.AllArgsConstructor;

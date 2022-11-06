@@ -1,4 +1,4 @@
-package com.example.reportservice.config;
+package com.example.reportservice.configurations;
 
 import lombok.Getter;
 import lombok.Setter;
