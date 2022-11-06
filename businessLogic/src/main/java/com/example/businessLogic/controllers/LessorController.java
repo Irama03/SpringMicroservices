@@ -35,7 +35,6 @@ public class LessorController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','LESSOR')")
     public Lessor create(@Valid @RequestBody LessorPostDto lessor) {
-        System.out.println(lessor);
         return lessorService.create(lessor);
     }
 
