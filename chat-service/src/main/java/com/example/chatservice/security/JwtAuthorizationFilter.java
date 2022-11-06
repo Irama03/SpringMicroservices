@@ -6,17 +6,16 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.chatservice.helpers.ResponseHelper;
 import com.example.chatservice.models.ApiErrorResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,20 +24,17 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 
-@Component
+@AllArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
-
-    @Autowired
-    private Environment environment;
+    private final String SECRET;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null) {
             try {
-                String secret = "secret";// todo: environment is null for some reason
-                Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
                 String username = decodedJWT.getSubject();
@@ -50,7 +46,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 ResponseHelper.setResponse(response, FORBIDDEN.value(), new ApiErrorResponse("Token validation failed"));
             }
         } else {
-            ResponseHelper.setResponse(response, FORBIDDEN.value(), new ApiErrorResponse("Missing token"));
+            filterChain.doFilter(request, response);
         }
     }
 }

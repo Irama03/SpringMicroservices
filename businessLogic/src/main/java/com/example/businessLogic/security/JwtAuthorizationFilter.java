@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.businessLogic.helpers.ResponseHelper;
 import com.example.businessLogic.models.ApiErrorResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,17 +24,17 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.FORBIDDEN;
-
+@AllArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    private final String SECRET;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws IOException, ServletException {
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (token != null) {
             try {
-                String secret = "secret";// todo: environment is null for some reason
-                Algorithm algorithm = Algorithm.HMAC256(secret.getBytes());
+                Algorithm algorithm = Algorithm.HMAC256(SECRET.getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(token);
                 String username = decodedJWT.getSubject();
