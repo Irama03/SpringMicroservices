@@ -4,6 +4,7 @@ import com.example.chatservice.dtos.mappers.MessageMapper;
 import com.example.chatservice.dtos.messages.MessageGetDto;
 import com.example.chatservice.dtos.messages.MessagePostDto;
 import com.example.chatservice.services.interfaces.MessageService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +38,8 @@ public class MessageController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
-    public MessageGetDto addMessage(@Valid @RequestBody MessagePostDto messagePostDto){
-        return messageMapper.messageToMessageGetDto(messageService.addMessage(messageMapper.messagePostDtoToMessage(messagePostDto)));
+    public MessageGetDto addMessage(@Valid @RequestBody MessagePostDto messagePostDto, @RequestHeader(HttpHeaders.AUTHORIZATION) String authToken){
+        return messageMapper.messageToMessageGetDto(messageService.addMessage(messageMapper.messagePostDtoToMessage(messagePostDto), authToken));
     }
 
     @DeleteMapping("/{id}")
