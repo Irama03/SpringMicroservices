@@ -48,13 +48,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room updateRoom(Long id, Room room) {
-        nameShouldBeUnique(room.getName());
-        return roomRepository
-                .findById(id)
-                .map(r -> roomRepository.save(new Room(id, room.getName(), room.getType(),
+        Room r = getRoomById(id);
+        if (!r.getName().equals(room.getName()))
+            nameShouldBeUnique(room.getName());
+        return roomRepository.save(new Room(id, room.getName(), room.getType(),
                         room.getDescription(), lessorService.getById(r.getLessor().getId()),
-                        room.getAddress(), room.getCity(), room.getPrice(), room.getCapacity())))
-                .orElseThrow(() -> new RecordNotFoundException(Lessor.class, "id", id));
+                        room.getAddress(), room.getCity(), room.getPrice(), room.getCapacity()));
     }
 
     @Override

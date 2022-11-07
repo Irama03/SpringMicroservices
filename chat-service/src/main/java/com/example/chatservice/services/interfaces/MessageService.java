@@ -6,7 +6,7 @@ public interface MessageService {
     Iterable<Message> getMessagesOfChat(Long chatId);
     Message getMessageById(Long id);
 
-    Message addMessage(Message message);
+    Message addMessage(Message message, String authToken);
 
     void deleteMessage(Long id);
 

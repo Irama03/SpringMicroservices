@@ -4,6 +4,7 @@ import com.example.chatservice.dtos.clients.ClientSlimGetDto;
 import com.example.chatservice.exceptions.RecordNotFoundException;
 import com.example.chatservice.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -18,11 +19,11 @@ public class BusinessLogicWebClient {
         this.client = client;
     }
 
-    public ClientSlimGetDto fetchUser(Long userId) {
+    public ClientSlimGetDto fetchUser(Long userId, String authToken) {
         return this.client.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("clients/" + userId)
-                        .build())
+                        .build()).header(HttpHeaders.AUTHORIZATION, authToken)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatus.NOT_FOUND::equals,

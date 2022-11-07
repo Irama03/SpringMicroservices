@@ -21,6 +21,8 @@ public class SyncCallTest {
     private BusinessLogicWebClient businessLogicWebClient;
     private MockWebServer server;
 
+    private final String ADMIN_JWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IkFETUlOIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2FwaS9sZXNzb3JzIiwiZXhwIjoxNjk5MjE2NDk3fQ.YJxdKh8th1uFcTAH11oCDaaeJRSElbSYgwWZS75VP54";
+
     @BeforeEach
     void setUp() throws IOException {
         server = new MockWebServer();
@@ -44,7 +46,7 @@ public class SyncCallTest {
                         "}");
         server.enqueue(response);
         //no need to call block - evidence of sync call
-        ClientSlimGetDto result = businessLogicWebClient.fetchUser(3L);
+        ClientSlimGetDto result = businessLogicWebClient.fetchUser(3L, ADMIN_JWT);
 
         assertThat(result.getId()).isEqualTo(3L);
         assertThat(result.getName()).isEqualTo("Client first");
