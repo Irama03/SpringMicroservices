@@ -1,4 +1,4 @@
-package com.example.businessLogic.apiTests;
+package com.example.businessLogic.functionality;
 
 import com.example.businessLogic.dtos.lessor.LessorPostDto;
 import com.example.businessLogic.models.*;
