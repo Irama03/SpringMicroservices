@@ -1,4 +1,4 @@
-package com.example.businessLogic.apiTests;
+package com.example.businessLogic.functionality;
 
 import com.example.businessLogic.dtos.lessor.LessorPostDto;
 import com.example.businessLogic.models.Lessor;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class RoomTest {
+public class RoomRestAPITest {
 
 
     @Autowired
