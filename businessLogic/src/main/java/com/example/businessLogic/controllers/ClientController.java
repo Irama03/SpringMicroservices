@@ -1,5 +1,6 @@
 package com.example.businessLogic.controllers;
 
+import com.example.businessLogic.dtos.clients.ClientPostDto;
 import com.example.businessLogic.dtos.clients.ClientSlimGetDto;
 import com.example.businessLogic.dtos.mappers.ClientMapper;
 import com.example.businessLogic.models.Client;
@@ -40,15 +41,14 @@ public class ClientController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
-    public Client create(@Valid @RequestBody Client client) {
-        System.out.println(client);
-        return clientService.create(client);
+    public Client create(@Valid @RequestBody ClientPostDto clientPostDto) {
+        return clientService.create(mapper.clientPostDtoToClient(clientPostDto));
     }
 
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
-    public Client update(@PathVariable Long id, @Valid @RequestBody Client client) {
-        return clientService.updateById(id, client);
+    public Client update(@PathVariable Long id, @Valid @RequestBody ClientPostDto clientPostDto) {
+        return clientService.updateById(id, mapper.clientPostDtoToClient(clientPostDto));
     }
 
     @DeleteMapping(path = "/{id}")

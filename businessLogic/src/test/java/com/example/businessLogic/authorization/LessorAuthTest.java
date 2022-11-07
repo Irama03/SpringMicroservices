@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class LessorTest {
+public class LessorAuthTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -494,6 +494,65 @@ public class LessorTest {
         lessorService.create(new LessorPostDto("lessorC", "lessor3@email.com", "+380987654563"));
         mockMvc.perform(delete("/api/lessors")
                         .header(HttpHeaders.AUTHORIZATION, LESSOR_JWT))
+                .andExpect(status().isForbidden());
+    }
+
+
+    // Without JWT token
+
+    @Test
+    public void givenAuthAdminRequestOnGetAllLessors_whenJwtNotInHeader_shouldFailWith403() throws Exception {
+        lessorService.create(new LessorPostDto("lessorA", "lessor1@email.com", "+380987654561"));
+        lessorService.create(new LessorPostDto("lessorB", "lessor2@email.com", "+380987654562"));
+        lessorService.create(new LessorPostDto("lessorC", "lessor3@email.com", "+380987654563"));
+        mockMvc.perform(get("/api/lessors").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void givenAuthAdminRequestOnGetLessorById_whenJwtNotInHeader_shouldFailWith403() throws Exception {
+        Lessor l = lessorService.create(new LessorPostDto("lessorA", "lessor1@email.com", "+380987654561"));
+        mockMvc.perform(get("/api/lessors/"+l.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void givenAuthAdminRequestOnPostLessor_whenJwtNotInHeader_shouldFailWith403() throws Exception {
+        LessorPostDto l = new LessorPostDto("lessorA", "lessor1@email.com", "+380987654561");
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(l);
+        mockMvc.perform(post("/api/lessors")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isForbidden());
+    }
+
+
+    @Test
+    public void givenAuthAdminRequestOnPutLessor_whenJwtNotInHeader_shouldFailWith403() throws Exception {
+        Lessor l = lessorService.create(new LessorPostDto("lessorA", "lessor1@email.com", "+380987654561"));
+        LessorPostDto upd = new LessorPostDto("lessorABC", "lessor2@email.com", "+380987654561");
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(upd);
+        mockMvc.perform(put("/api/lessors/"+l.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void givenAuthAdminRequestOnDeleteLessorById_whenJwtNotInHeader_shouldFailWith403() throws Exception {
+        Lessor l = lessorService.create(new LessorPostDto("lessorA", "lessor1@email.com", "+380987654561"));
+        mockMvc.perform(delete("/api/lessors/"+l.getId()))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void givenAuthAdminRequestOnDeleteAllLessors_whenJwtNotInHeader_shouldFailWith403() throws Exception {
+        lessorService.create(new LessorPostDto("lessorA", "lessor1@email.com", "+380987654561"));
+        lessorService.create(new LessorPostDto("lessorB", "lessor2@email.com", "+380987654562"));
+        lessorService.create(new LessorPostDto("lessorC", "lessor3@email.com", "+380987654563"));
+        mockMvc.perform(delete("/api/lessors"))
                 .andExpect(status().isForbidden());
     }
 
