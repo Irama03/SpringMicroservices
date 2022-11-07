@@ -1,13 +1,8 @@
-package com.example.businessLogic.apiTests;
+package com.example.businessLogic.functionality;
 
 import com.example.businessLogic.dtos.clients.ClientPostDto;
-import com.example.businessLogic.dtos.lessor.LessorPostDto;
 import com.example.businessLogic.models.Client;
-import com.example.businessLogic.models.Lessor;
-import com.example.businessLogic.models.Room;
-import com.example.businessLogic.models.RoomType;
 import com.example.businessLogic.services.interfaces.ClientService;
-import com.example.businessLogic.services.interfaces.LessorService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,12 +20,13 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ClientTest {
+public class ClientRestApiTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -105,6 +101,73 @@ public class ClientTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ADMIN","CLIENT"})
+    public void updateClient_shouldSucceedWith200() throws Exception {
+        Client client = new Client("client", "client1@gmail.com", "+380676676677");
+        Client savedClient = clientService.create(client);
+        ClientPostDto clientPostDtoForUpdate = new ClientPostDto("clientUpdated",
+                "client1Updated@gmail.com", "+380676676677");
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(clientPostDtoForUpdate);
+        mockMvc.perform(put("/api/clients/" + savedClient.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(savedClient.getId()))
+                .andExpect(jsonPath("$.name").value("clientUpdated"))
+                .andExpect(jsonPath("$.email").value("client1Updated@gmail.com"))
+                .andExpect(jsonPath("$.phone").value("+380676676677"));
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ADMIN","CLIENT"})
+    public void updateClientByNotExistingId_shouldSucceedWith404() throws Exception {
+        Client client = new Client("client", "client1@gmail.com", "+380676676677");
+        clientService.create(client);
+        ClientPostDto clientPostDtoForUpdate = new ClientPostDto("clientUpdated",
+                "client1Updated@gmail.com", "+380676676677");
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(clientPostDtoForUpdate);
+        mockMvc.perform(put("/api/clients/-1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ADMIN","CLIENT"})
+    public void updateClientWithExistingName_shouldSucceedWith400() throws Exception {
+        Client client1 = new Client("client", "client1@gmail.com", "+380676676677");
+        Client client2 = new Client("client", "client2@gmail.com", "+380676676688");
+        Client savedClient = clientService.create(client1);
+        clientService.create(client2);
+        ClientPostDto clientPostDtoForUpdate = new ClientPostDto("clientUpdated",
+                "client2@gmail.com", "+380676676657");
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(clientPostDtoForUpdate);
+        mockMvc.perform(put("/api/clients/" + savedClient.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ADMIN"})
+    public void deleteClient_shouldSucceedWith200() throws Exception {
+        Client client = new Client("client", "client1@gmail.com", "+380676676677");
+        Client savedClient = clientService.create(client);
+        mockMvc.perform(delete("/api/clients/" + savedClient.getId()).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(authorities = {"ADMIN"})
+    public void deleteClientByNotExistingId_shouldSucceedWith404() throws Exception {
+        mockMvc.perform(delete("/api/clients/-1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
 }
