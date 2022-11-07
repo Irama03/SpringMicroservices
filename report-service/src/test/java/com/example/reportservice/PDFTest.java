@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
@@ -27,6 +28,9 @@ public class PDFTest {
     @Autowired
     private WebApplicationContext context;
 
+    private final String ADMIN_JWT = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IkFETUlOIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2FwaS9sZXNzb3JzIiwiZXhwIjoxNjk5MjE2NDk3fQ.YJxdKh8th1uFcTAH11oCDaaeJRSElbSYgwWZS75VP54";
+
+
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(context)
@@ -34,9 +38,10 @@ public class PDFTest {
     }
 
     @Test
-    @WithMockUser(authorities = {"ADMIN"})
     public void givenRequestToGetStatistics_shouldReturnPDF() throws Exception {
-        mockMvc.perform(get("/api/statistics").contentType(MediaType.APPLICATION_PDF_VALUE))
+        mockMvc.perform(get("/api/statistics")
+                        .contentType(MediaType.APPLICATION_PDF_VALUE)
+                        .header(HttpHeaders.AUTHORIZATION, ADMIN_JWT))
                 .andExpect(status().isOk());
     }
 
