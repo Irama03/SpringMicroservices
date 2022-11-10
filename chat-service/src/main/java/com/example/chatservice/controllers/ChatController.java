@@ -1,5 +1,6 @@
 package com.example.chatservice.controllers;
 
+import com.example.chatservice.apiCommunication.JMSService;
 import com.example.chatservice.dtos.chats.ChatGetDto;
 import com.example.chatservice.dtos.chats.ChatPostDto;
 import com.example.chatservice.dtos.mappers.ChatMapper;
@@ -20,6 +21,9 @@ public class ChatController {
     private final ChatMapper mapper;
 
     @Autowired
+    private JMSService jmsService;
+
+    @Autowired
     public ChatController(ChatService chatService, ChatMapper mapper) {
         this.chatService = chatService;
         this.mapper = mapper;
@@ -30,6 +34,12 @@ public class ChatController {
     public Iterable<ChatGetDto> getAllChats() {
         return mapper.chatsToChatGetDtos(chatService.getAll());
     }
+
+    @GetMapping("/message")
+    public void sendMessageToQueue() {
+        jmsService.sendMessageToQueue();
+    }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")

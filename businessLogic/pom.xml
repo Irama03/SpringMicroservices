@@ -72,6 +72,10 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.2.Final</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-activemq</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

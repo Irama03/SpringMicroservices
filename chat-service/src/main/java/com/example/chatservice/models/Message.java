@@ -30,3 +30,9 @@ public class Message {
     private String text;
 
 }
+
+// p2p: when booking is created, send message from client to lessor (create chat for them if it does not exist) using queue  - Illia K.
+// send logs from services (text, level, microserviceTag, date time) to topic - Ira
+// microservice to filter messages and send email to email@gmail.com using topic - Illia S.
+// microservice to receive logs from topic for logging (save logs to db)
+
