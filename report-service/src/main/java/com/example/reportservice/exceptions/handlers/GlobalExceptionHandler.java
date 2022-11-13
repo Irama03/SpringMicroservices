@@ -1,4 +1,4 @@
-package com.example.authservice.exceptions;
+package com.example.reportservice.exceptions.handlers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,11 +10,6 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(value = {BadCredentialsException.class})
-    public ModelAndView handleBadCredentialsException(BadCredentialsException e) {
-        return getModelAndViewFromException(e, HttpStatus.FORBIDDEN);
-    }
 
     @ExceptionHandler(value = {Exception.class})
     public ModelAndView catchOtherExceptions(Exception e) {

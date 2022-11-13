@@ -1,6 +1,6 @@
-package com.example.businessLogic.services.implementations;
+package com.example.authservice.services;
 
-import com.example.businessLogic.models.LogMessage;
+import com.example.authservice.models.LogMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessagePostProcessor;
@@ -19,16 +19,11 @@ public class JMSService {
         jmsTemplate.convertAndSend("LogsTopic", logMessage, new MessagePostProcessor() {
             @Override
             public Message postProcessMessage(Message message) throws JMSException {
-                message.setStringProperty("microserviceTag", "businessLogic");
+                message.setStringProperty("microserviceTag", "auth");
                 message.setStringProperty("logLevel", logMessage.getLevel());
                 return message;
             }
         });
     }
-
-    /*@JmsListener(destination = "LogsTopic")
-    public void receiveMessage(LogMessage logMessage) {
-        System.out.println("Received message = '"+logMessage+"'");
-    }*/
 
 }
