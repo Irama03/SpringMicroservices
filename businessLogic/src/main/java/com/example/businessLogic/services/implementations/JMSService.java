@@ -27,9 +27,9 @@ public class JMSService {
         });
     }
 
-    @JmsListener(destination = "LogsTopic")
+    /*@JmsListener(destination = "LogsTopic")
     public void receiveMessage(LogMessage logMessage) {
         System.out.println("Received message = '"+logMessage+"'");
-    }
+    }*/
 
 }

@@ -50,6 +50,11 @@ public class GlobalExceptionHandler {
         return getModelAndViewFromException(e, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = {Exception.class})
+    public ModelAndView catchOtherExceptions(Exception e) {
+        return getModelAndViewFromException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     private Map<String, String> makeSimpleExceptionResponse(Exception e) {
         Map<String, String> map = new HashMap<>();
         map.put("success", "false");
