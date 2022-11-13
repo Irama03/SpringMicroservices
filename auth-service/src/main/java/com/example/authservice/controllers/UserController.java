@@ -21,6 +21,8 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<String> logIn(@NotBlank @RequestParam String email, @NotBlank @RequestParam String password) {
+        //testing jms logging-service
+        if(email.equals("exception")) throw new RuntimeException();
         User user = userService.getByCredentials(email, password);
         String token = generator.generateToken(user);
         return ResponseEntity.ok(token);

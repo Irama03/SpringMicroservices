@@ -39,6 +39,8 @@ public class BookingController {
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
     public BookingGetDto getBooking(@PathVariable(name = "id") Long id) {
+        //testing jms logging-service
+        //if(id == -1) throw new RuntimeException();
         return mapper.bookingToBookingGetDto(bookingService.getBookingById(id));
     }
 
