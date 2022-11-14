@@ -14,6 +14,8 @@ import javax.jms.Session;
 @Configuration
 public class JMSConfig {
 
+    public static final String BOOKING_QUEUE = "booking_queue";
+
     @Bean
     public DynamicDestinationResolver destinationResolver() {
         return new DynamicDestinationResolver() {

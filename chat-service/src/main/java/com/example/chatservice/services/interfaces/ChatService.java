@@ -9,6 +9,7 @@ import java.util.Set;
 public interface ChatService {
 
     Chat add(ChatPostDto chatPostDto, String authToken);
+    Chat addNoCheck(ChatPostDto chatPostDto);
 
     Chat getById(Long id);
 

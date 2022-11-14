@@ -35,21 +35,26 @@ public class ChatServiceImpl implements ChatService {
         return chatRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(Chat.class, "id", id));
     }
 
+    @Override
     public Chat addNoCheck(ChatPostDto chatPostDto) {
-        Chat createdChat = chatRepository.save(new Chat());
-        for (Long userId : chatPostDto.getUsers()) {
-            ChatParticipation participation = new ChatParticipation(createdChat, userId);
-            participationRepository.save(participation);
-            createdChat.getUsers().add(participation);
+        Optional<Chat> existingChat = getByUserIds(chatPostDto.getUsers());
+        if (existingChat.isPresent()) {
+            return existingChat.get();
+        } else {
+            Chat createdChat = chatRepository.save(new Chat());
+            for (Long userId : chatPostDto.getUsers()) {
+                ChatParticipation participation = new ChatParticipation(createdChat, userId);
+                participationRepository.save(participation);
+                createdChat.getUsers().add(participation);
+            }
+            return chatRepository.save(createdChat);
         }
-        return chatRepository.save(createdChat);
     }
 
     @Override
     public Chat add(ChatPostDto chatPostDto, String authToken) {
         chatPostDto.getUsers().forEach(id -> webClient.fetchUser(id, authToken));
-        Optional<Chat> existingChat = getByUserIds(chatPostDto.getUsers());
-        return existingChat.orElseGet(() -> addNoCheck(chatPostDto));
+        return addNoCheck(chatPostDto);
     }
 
     @Override

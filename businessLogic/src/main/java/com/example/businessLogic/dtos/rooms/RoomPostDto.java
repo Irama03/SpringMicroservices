@@ -25,6 +25,7 @@ public class RoomPostDto {
     private RoomType type;
 
     @JsonProperty("description")
+    @NotNull
     private String description;
 
     @JsonProperty("lessor")

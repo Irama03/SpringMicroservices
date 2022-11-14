@@ -1,5 +1,7 @@
 package com.example.businessLogic.services.implementations;
 
+import com.example.businessLogic.config.JMSConfig;
+import com.example.businessLogic.models.BookingMessage;
 import com.example.businessLogic.models.LogMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.jms.core.JmsTemplate;
@@ -8,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
 import javax.jms.Message;
+
+import static com.example.businessLogic.config.JMSConfig.BOOKING_QUEUE;
 
 @Component
 @AllArgsConstructor
@@ -24,6 +28,10 @@ public class JMSService {
                 return message;
             }
         });
+    }
+
+    public void sendBookingMessage(BookingMessage bookingMessage) {
+        jmsTemplate.convertAndSend(BOOKING_QUEUE, bookingMessage);
     }
 
     /*@JmsListener(destination = "LogsTopic")

@@ -1,6 +1,7 @@
 package com.example.chatservice.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Message {
 
     @Id
@@ -29,4 +31,9 @@ public class Message {
     @NotNull
     private String text;
 
+    public Message(long senderId, Chat chat, String text) {
+        this.senderId = senderId;
+        this.chat = chat;
+        this.text = text;
+    }
 }

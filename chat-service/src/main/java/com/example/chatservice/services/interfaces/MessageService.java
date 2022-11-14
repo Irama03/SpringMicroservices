@@ -7,6 +7,7 @@ public interface MessageService {
     Message getMessageById(Long id);
 
     Message addMessage(Message message, String authToken);
+    Message addMessageNoCheck(Message message);
 
     void deleteMessage(Long id);
 

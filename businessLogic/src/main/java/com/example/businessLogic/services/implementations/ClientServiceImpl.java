@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 
 @Service
-public class BasicClientService implements ClientService {
+public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
 
     @Autowired
-    public BasicClientService(ClientRepository clientRepository) {
+    public ClientServiceImpl(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 

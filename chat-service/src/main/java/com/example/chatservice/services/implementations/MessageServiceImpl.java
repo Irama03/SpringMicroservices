@@ -42,6 +42,11 @@ public class MessageServiceImpl implements MessageService {
     public Message addMessage(Message message, String authToken) {
         //TODO: check senderId
         webClient.fetchUser(message.getSenderId(), authToken);
+        return addMessageNoCheck(message);
+    }
+
+    @Override
+    public Message addMessageNoCheck(Message message) {
         Chat chat = chatRepository.findById(message.getChat().getId()).orElseThrow(
                 () -> new RecordNotFoundException(Chat.class, "id", message.getChat().getId()));
         message.setChat(chat);
