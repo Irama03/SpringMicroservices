@@ -38,7 +38,7 @@ public class MetricsController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void resetMetrics() {
         timeTracker.reset();
-
+    }
 
     @GetMapping("/errors")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -51,7 +51,7 @@ public class MetricsController {
     public String getLessorControllerMetrics() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode rootNode = mapper.createObjectNode();
-        rootNode.put("lessor_controller_request_per_minute", lessorControllerMetricsAspect.getLessorRequestsPerMinute());
+        rootNode.put("lessor_controller_request_per_minute", requestsMetricsAspect.getLessorRequestsPerMinute());
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
     }
 
@@ -60,7 +60,7 @@ public class MetricsController {
     public String getGeneralControllerMetrics() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode rootNode = mapper.createObjectNode();
-        rootNode.put("business_logic_request_per_minute", lessorControllerMetricsAspect.getGeneralRequestsPerMinute());
+        rootNode.put("business_logic_request_per_minute", requestsMetricsAspect.getGeneralRequestsPerMinute());
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rootNode);
     }
 
