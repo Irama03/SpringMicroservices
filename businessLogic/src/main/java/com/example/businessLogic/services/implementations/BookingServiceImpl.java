@@ -50,7 +50,7 @@ public class BookingServiceImpl implements BookingService {
     public void sendBookingMessage(Lessor lessor, Client client, Room room) {
         String text = "Your booking for room '" + room.toString() + "' has been created.";
         BookingMessage message = new BookingMessage(text, lessor.getId(), client.getId());
-        jmsService.sendBookingMessage(message);
+//        jmsService.sendBookingMessage(message);
     }
 
     @Override

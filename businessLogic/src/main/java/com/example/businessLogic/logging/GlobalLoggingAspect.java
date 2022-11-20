@@ -20,17 +20,17 @@ public class GlobalLoggingAspect {
 
     @AfterReturning(returning = "returnObject", value = "execution(* com.example.businessLogic.controllers.*.*(..))")
     public void objectAfterAdvice(JoinPoint joinPoint, Object returnObject) {
-        jmsService.sendMessageToTopic(createLogMessage("INFO", joinPoint, returnObject));
+//        jmsService.sendMessageToTopic(createLogMessage("INFO", joinPoint, returnObject));
     }
 
     @AfterReturning(returning = "returnObject", value = "execution(* com.example.businessLogic.exceptions.handlers.GlobalExceptionHandler.handle*(..))")
     public void warnErrorAfterAdvice(JoinPoint joinPoint, Object returnObject) {
-        jmsService.sendMessageToTopic(createLogMessage("WARN", joinPoint, returnObject));
+//        jmsService.sendMessageToTopic(createLogMessage("WARN", joinPoint, returnObject));
     }
 
     @AfterReturning(returning = "returnObject", value = "execution(* com.example.businessLogic.exceptions.handlers.GlobalExceptionHandler.catchOtherExceptions(..))")
     public void errorAfterAdvice(JoinPoint joinPoint, Object returnObject) {
-        jmsService.sendMessageToTopic(createLogMessage("ERROR", joinPoint, returnObject));
+//        jmsService.sendMessageToTopic(createLogMessage("ERROR", joinPoint, returnObject));
     }
 
     private LogMessage createLogMessage(String logLevel, JoinPoint joinPoint, Object returnObject) {
