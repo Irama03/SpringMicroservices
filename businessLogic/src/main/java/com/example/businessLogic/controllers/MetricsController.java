@@ -2,14 +2,12 @@ package com.example.businessLogic.controllers;
 
 import com.example.businessLogic.metrics.RequestTimeTracker;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import com.example.businessLogic.metrics.ErrorMetricsAspect;
 import com.example.businessLogic.metrics.RequestsMetricsAspect;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,13 +26,13 @@ public class MetricsController {
 
     private RequestsMetricsAspect requestsMetricsAspect;
 
-    @GetMapping
+    @GetMapping("/endToEndAverageTime")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public Map<String, Double> getAllMetrics() {
         return timeTracker.getMetrics();
     }
 
-    @DeleteMapping
+    @DeleteMapping("/endToEndAverageTime")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public void resetMetrics() {
         timeTracker.reset();
