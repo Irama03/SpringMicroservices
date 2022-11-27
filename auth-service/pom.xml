@@ -77,6 +77,11 @@
             <artifactId>aspectjtools</artifactId>
             <version>${aspectj.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>7.2</version>
+        </dependency>
     </dependencies>
 
 </project>
