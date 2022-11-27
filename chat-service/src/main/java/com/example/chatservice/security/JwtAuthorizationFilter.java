@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.chatservice.helpers.ResponseHelper;
 import com.example.chatservice.models.ApiErrorResponse;
+import io.sentry.Sentry;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,6 +44,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
             } catch (Exception exception) {
+                //for testing sentry
+                Sentry.captureException(exception);
                 ResponseHelper.setResponse(response, FORBIDDEN.value(), new ApiErrorResponse("Token validation failed"));
             }
         } else {
