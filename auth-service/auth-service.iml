@@ -141,5 +141,6 @@
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.13.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.aspectj:aspectjrt:1.9.9.1" level="project" />
     <orderEntry type="library" name="Maven: org.aspectj:aspectjtools:1.9.9.1" level="project" />
+    <orderEntry type="library" name="Maven: net.logstash.logback:logstash-logback-encoder:7.2" level="project" />
   </component>
 </module>
