@@ -11,7 +11,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>configserver</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>configserver</name>
+	<name>config-server</name>
 	<description>Config server</description>
 	<properties>
 		<java.version>17</java.version>
