@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8091/eureka/
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: chatService
+          uri: lb://CHAT-SERVICE
+          predicates:
+            - Path=/api/chats/**, /api/messages/**
+        - id: businessLogicService
+          uri: lb://BUSINESSLOGIC
+          predicates:
+            - Path=/api/bookings/**, /api/clients/**, /api/lessors/**, /api/rooms/**, /api/data_for_statistics/**
