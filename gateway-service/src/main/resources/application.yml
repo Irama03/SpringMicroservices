@@ -21,10 +21,10 @@ spring:
           predicates:
             - Path=/api/bookings/**, /api/clients/**, /api/lessors/**, /api/rooms/**, /api/data_for_statistics/**
         - id: authService
-            uri: lb://AUTH-SERVICE
-            predicates:
-              - Path=/api/login/**
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/login/**
         - id: reportService
-            uri: lb://REPORT-SERVICE
-            predicates:
-              - Path=/api/statistics/**
+          uri: lb://REPORT-SERVICE
+          predicates:
+            - Path=/api/statistics/**
