@@ -21,15 +21,15 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ModelAndView handleInvalidObjectsExceptions(MethodArgumentNotValidException e){
+    public ResponseEntity<Map<String,String>> handleInvalidObjectsExceptions(MethodArgumentNotValidException e){
         Map<String,String> map = new HashMap<>();
         map.put("success","false");
         map.put("error",e.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(", ")));
-        return wrapResponseByModelAndView(map,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ModelAndView handleInvalidParamsExceptions(ConstraintViolationException e){
+    public ResponseEntity<Map<String,String>> handleInvalidParamsExceptions(ConstraintViolationException e){
         Map<String,String> map = new HashMap<>();
         map.put("success","false");
         StringBuilder s = new StringBuilder();
@@ -37,22 +37,26 @@ public class GlobalExceptionHandler {
             s.append(violation.getMessage()).append('\n');
         }
         map.put("error",s.toString());
-        return wrapResponseByModelAndView(map,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(map,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {RecordNotFoundException.class, UserNotFoundException.class})
-    public ModelAndView handleNotFoundExceptions(Exception e){
-        return getModelAndViewFromException(e,HttpStatus.NOT_FOUND);
+    public ResponseEntity<Map<String,String>> handleNotFoundExceptions(Exception e){
+        return makeExceptionResponseEntity(e,HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {ValueNotUniqueException.class})
-    public ModelAndView handleBadRequestExceptions(Exception e){
-        return getModelAndViewFromException(e,HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String,String>> handleBadRequestExceptions(Exception e){
+        return makeExceptionResponseEntity(e,HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {Exception.class})
-    public ModelAndView catchOtherExceptions(Exception e) {
-        return getModelAndViewFromException(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<Map<String,String>> catchOtherExceptions(Exception e) {
+        return makeExceptionResponseEntity(e, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    private ResponseEntity<Map<String,String>> makeExceptionResponseEntity(Exception e, HttpStatus httpStatus) {
+        return new ResponseEntity<>(makeSimpleExceptionResponse(e), httpStatus);
     }
 
     private Map<String, String> makeSimpleExceptionResponse(Exception e) {
