@@ -25,6 +25,7 @@ public class JMSService {
             public Message postProcessMessage(Message message) throws JMSException {
                 message.setStringProperty("microserviceTag", "businessLogic");
                 message.setStringProperty("logLevel", logMessage.getLevel());
+                System.out.println(message.getStringProperty("text"));
                 return message;
             }
         });

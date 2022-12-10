@@ -114,6 +114,11 @@
             <version>3.21.11</version>
             <type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-client</artifactId>
+            <version>2.7.2</version>
+        </dependency>
     </dependencies>
 
     <dependencyManagement>
@@ -144,7 +149,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                            <protocArtifact>com.google.protobuf:protoc:${protobuf-java.version}:exe:osx-x86_64</protocArtifact>
+                            <protocArtifact>com.google.protobuf:protoc:${protobuf-java.version}:exe:windows-x86_64</protocArtifact>
                         </configuration>
                     </execution>
                 </executions>
