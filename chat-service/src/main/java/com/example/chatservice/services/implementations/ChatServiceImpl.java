@@ -1,6 +1,6 @@
 package com.example.chatservice.services.implementations;
 
-import com.example.chatservice.apiCommunication.BusinessLogicWebClient;
+import com.example.chatservice.apiCommunication.AuthServiceProtoClient;
 import com.example.chatservice.dtos.chats.ChatPostDto;
 import com.example.chatservice.exceptions.RecordNotFoundException;
 import com.example.chatservice.exceptions.ValueNotUniqueException;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ChatServiceImpl implements ChatService {
     private final ChatRepository chatRepository;
     private final ChatParticipationRepository participationRepository;
-    private final BusinessLogicWebClient webClient;
+    private final AuthServiceProtoClient webClient;
 
 
     @Override

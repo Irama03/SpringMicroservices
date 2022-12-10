@@ -1,32 +1,20 @@
 package com.example.chatservice.configurations;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import com.netflix.appinfo.InstanceInfo;
+import com.netflix.discovery.EurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
 
-    private static final String BUSINESS_LOGIC_ID = "businessLogic";
-
-    @Autowired
-    private Environment environment;
+    private static final String AUTH_SERVICE_ID = "auth-service";
 
     @Bean
-    @LoadBalanced
-    public WebClient.Builder getWebClientBuilder() {
-        return WebClient.builder();
-    }
-
-    @Bean
-    public WebClient getWebClient(WebClient.Builder builder) {
-        return builder.baseUrl("http://" + BUSINESS_LOGIC_ID + "/api/").build();
-//        return WebClient.builder().baseUrl("http://" + environment.getProperty("container.name") +
-//                ":" + environment.getProperty("container.port") + "/api/").build();
+    public WebClient getWebClient(EurekaClient discoveryClient) {
+        InstanceInfo instance = discoveryClient.getNextServerFromEureka(AUTH_SERVICE_ID, false);
+        return WebClient.builder().baseUrl(instance.getHomePageUrl()).build();
     }
 
 }

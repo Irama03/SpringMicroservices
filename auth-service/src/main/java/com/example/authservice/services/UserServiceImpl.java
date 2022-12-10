@@ -1,6 +1,7 @@
 package com.example.authservice.services;
 
 import com.example.authservice.exceptions.BadCredentialsException;
+import com.example.authservice.exceptions.RecordNotFoundException;
 import com.example.authservice.models.User;
 import com.example.authservice.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,10 @@ public class UserServiceImpl implements UserService {
         if(user.isEmpty() || !user.get().getPassword().equals(password))
             throw new BadCredentialsException();
         return user.get();
+    }
+
+    @Override
+    public User getById(Long id) {
+        return userRepo.findById(id).orElseThrow(() -> new RecordNotFoundException(User.class, "id", id));
     }
 }

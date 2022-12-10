@@ -1,28 +1,22 @@
 package com.example.chatservice.services.implementations;
 
-import com.example.chatservice.apiCommunication.BusinessLogicWebClient;
+import com.example.chatservice.apiCommunication.AuthServiceProtoClient;
 import com.example.chatservice.exceptions.RecordNotFoundException;
 import com.example.chatservice.models.Chat;
 import com.example.chatservice.models.Message;
 import com.example.chatservice.repositories.ChatRepository;
 import com.example.chatservice.repositories.MessageRepository;
 import com.example.chatservice.services.interfaces.MessageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
     private final ChatRepository chatRepository;
-    private final BusinessLogicWebClient webClient;
-
-    @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, ChatRepository chatRepository, BusinessLogicWebClient webClient) {
-        this.messageRepository = messageRepository;
-        this.webClient = webClient;
-        this.chatRepository = chatRepository;
-    }
+    private final AuthServiceProtoClient webClient;
 
     @Override
     public Iterable<Message> getMessagesOfChat(Long chatId) {

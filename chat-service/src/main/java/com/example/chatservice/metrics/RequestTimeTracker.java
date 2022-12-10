@@ -30,7 +30,7 @@ public class RequestTimeTracker {
         return (System.currentTimeMillis() - millsStart) / 1000.;
     }
 
-    @Around("execution(public * com.example.chatservice.apiCommunication.BusinessLogicWebClient.fetchUser(..))")
+    @Around("execution(public * com.example.chatservice.apiCommunication.AuthServiceProtoClient.fetchUser(..))")
     public Object trackWebClientTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long current = System.currentTimeMillis();
         final Object res = joinPoint.proceed();

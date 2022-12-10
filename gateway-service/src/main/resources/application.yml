@@ -23,7 +23,7 @@ spring:
         - id: authService
           uri: lb://AUTH-SERVICE
           predicates:
-            - Path=/api/login/**
+            - Path=/api/login/**, /api/users/**
         - id: reportService
           uri: lb://REPORT-SERVICE
           predicates:

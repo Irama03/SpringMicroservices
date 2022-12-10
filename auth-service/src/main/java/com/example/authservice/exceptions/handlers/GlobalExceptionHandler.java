@@ -1,5 +1,7 @@
-package com.example.authservice.exceptions;
+package com.example.authservice.exceptions.handlers;
 
+import com.example.authservice.exceptions.BadCredentialsException;
+import com.example.authservice.exceptions.RecordNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,6 +16,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {BadCredentialsException.class})
     public ModelAndView handleBadCredentialsException(BadCredentialsException e) {
         return getModelAndViewFromException(e, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {RecordNotFoundException.class})
+    public ModelAndView catchNotFoundExceptions(RecordNotFoundException e) {
+        return getModelAndViewFromException(e, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {Exception.class})

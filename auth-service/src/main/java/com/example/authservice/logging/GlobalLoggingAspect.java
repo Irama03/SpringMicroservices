@@ -27,13 +27,13 @@ public class GlobalLoggingAspect {
         //jmsService.sendMessageToTopic(createLogMessage("INFO", joinPoint, returnObject));
     }
 
-    @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.exceptions.GlobalExceptionHandler.handle*(..))")
+    @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.exceptions.handlers.GlobalExceptionHandler.handle*(..))")
     public void warnErrorAfterAdvice(JoinPoint joinPoint, Object returnObject) {
         logger.warn(createLogMessage("WARN", joinPoint, returnObject).toString());
         //jmsService.sendMessageToTopic(createLogMessage("WARN", joinPoint, returnObject));
     }
 
-    @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.exceptions.GlobalExceptionHandler.catchOtherExceptions(..))")
+    @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.exceptions.handlers.GlobalExceptionHandler.catchOtherExceptions(..))")
     public void errorAfterAdvice(JoinPoint joinPoint, Object returnObject) {
         logger.error(createLogMessage("ERROR", joinPoint, returnObject).toString());
         //jmsService.sendMessageToTopic(createLogMessage("ERROR", joinPoint, returnObject));
