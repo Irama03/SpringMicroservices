@@ -197,7 +197,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
-                            <protocArtifact>com.google.protobuf:protoc:${protobuf-java.version}:exe:osx-x86_64</protocArtifact>
+                            <protocArtifact>com.google.protobuf:protoc:${protobuf-java.version}:exe:windows-x86_64</protocArtifact>
                         </configuration>
                     </execution>
                 </executions>

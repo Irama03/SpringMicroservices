@@ -18,6 +18,7 @@
 		<!-- AspectJ -->
 		<aspectj.version>1.9.9.1</aspectj.version>
 		<spring-cloud.version>2021.0.5</spring-cloud.version>
+		<cucumber.version>7.9.0</cucumber.version>
 		<!-- Protobuf -->
 		<protobuf.version>3.21.7</protobuf.version>
 		<protobuf-plugin.version>0.6.1</protobuf-plugin.version>
@@ -132,6 +133,23 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+<!--		Cucumber-->
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>${cucumber.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-junit</artifactId>
+			<version>${cucumber.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.cucumber</groupId>
+			<artifactId>cucumber-spring</artifactId>
+			<version>${cucumber.version}</version>
 		</dependency>
 <!-- 	gRPC -->
 		<dependency>

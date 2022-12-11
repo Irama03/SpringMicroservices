@@ -40,15 +40,14 @@ public class ChatServiceImpl implements ChatService {
         Optional<Chat> existingChat = getByUserIds(chatPostDto.getUsers());
         if (existingChat.isPresent()) {
             return existingChat.get();
-        } else {
-            Chat createdChat = chatRepository.save(new Chat());
-            for (Long userId : chatPostDto.getUsers()) {
-                ChatParticipation participation = new ChatParticipation(createdChat, userId);
-                participationRepository.save(participation);
-                createdChat.getUsers().add(participation);
-            }
-            return chatRepository.save(createdChat);
         }
+        Chat createdChat = chatRepository.save(new Chat());
+        for (Long userId : chatPostDto.getUsers()) {
+            ChatParticipation participation = new ChatParticipation(createdChat, userId);
+            participationRepository.save(participation);
+            createdChat.getUsers().add(participation);
+        }
+        return chatRepository.save(createdChat);
     }
 
     @Override
