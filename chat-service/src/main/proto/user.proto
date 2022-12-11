@@ -5,6 +5,14 @@ package user;
 option java_package = "com.example.chatservice.proto";
 option java_outer_classname = "UserProto";
 
+message Error {
+
+  bool success = 1;
+  string error = 2;
+
+}
+
+
 message User {
 
   int64 id = 1;

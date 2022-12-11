@@ -2,6 +2,7 @@ package com.example.authservice.exceptions.handlers;
 
 import com.example.authservice.exceptions.BadCredentialsException;
 import com.example.authservice.exceptions.RecordNotFoundException;
+import com.example.authservice.proto.UserProto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,8 +21,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(value = {RecordNotFoundException.class})
-    public ResponseEntity<Map<String,String>> catchNotFoundExceptions(RecordNotFoundException e) {
-        return makeExceptionResponseEntity(e, HttpStatus.NOT_FOUND);
+    public ResponseEntity<UserProto.Error> catchNotFoundExceptions(RecordNotFoundException e) {
+        return makeProtoError(e, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = {Exception.class})
@@ -31,6 +32,10 @@ public class GlobalExceptionHandler {
 
     private ResponseEntity<Map<String,String>> makeExceptionResponseEntity(Exception e, HttpStatus httpStatus) {
         return new ResponseEntity<>(makeSimpleExceptionResponse(e), httpStatus);
+    }
+
+    private ResponseEntity<UserProto.Error> makeProtoError(Exception e, HttpStatus httpStatus) {
+        return new ResponseEntity<>(UserProto.Error.newBuilder().setError(e.getMessage()).setSuccess(false).build(), httpStatus);
     }
 
     private Map<String, String> makeSimpleExceptionResponse(Exception e) {

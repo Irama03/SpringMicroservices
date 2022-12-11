@@ -25,7 +25,9 @@ public class AuthServiceProtoClient {
                 .accept(MediaType.parseMediaType("application/x-protobuf"))
                 .retrieve()
                 .onStatus(HttpStatus.NOT_FOUND::equals,
-                        response -> response.bodyToMono(String.class).map(UserNotFoundException::new))
+                        response ->
+                    response.bodyToMono(UserProto.Error.class).map(error -> new UserNotFoundException(error.getError()))
+                )
                 .bodyToMono(UserProto.User.class)
                 .block();
     }
