@@ -1,14 +1,17 @@
 package com.example.authservice.controllers;
 
+import com.example.authservice.dtos.UserPostDto;
 import com.example.authservice.models.User;
 import com.example.authservice.proto.UserProto;
 import com.example.authservice.services.UserService;
 import com.example.authservice.utils.JwtGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
 @RestController
@@ -30,6 +33,11 @@ public class UserController {
         return ResponseEntity.ok(token);
     }
 
+    @PostMapping(value = "/signup")
+    public ResponseEntity<UserPostDto> signUp(@Valid @RequestBody UserPostDto dto) {
+        userService.create(dto);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    }
 
     @GetMapping(value = "/users/{id}", produces = "application/x-protobuf")
     @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")

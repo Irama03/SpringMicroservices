@@ -28,6 +28,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
+        http.headers().frameOptions().disable();
+        http.authorizeHttpRequests().antMatchers("/h2-console").permitAll();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.exceptionHandling().accessDeniedHandler((
                 (request, response, accessDeniedException) -> ResponseHelper.setResponse(response, FORBIDDEN.value(),

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package service;
+
+option java_multiple_files = true;
+option java_package = "com.example.authservice.proto";
+option java_outer_classname = "ServiceProto";
+
+message UserDto {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  string phone = 4;
+  UserRole role = 5;
+
+  enum UserRole {
+    LESSOR = 0;
+    CLIENT = 1;
+  }
+}
+
+message ServiceReply {
+  bool success = 1;
+}
+
+service BusinessLogicService {
+  rpc sendUser (UserDto) returns (ServiceReply);
+}

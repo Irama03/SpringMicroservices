@@ -1,11 +1,15 @@
 package com.example.authservice.exceptions.handlers;
 
 import com.example.authservice.exceptions.BadCredentialsException;
+import com.example.authservice.exceptions.InvalidRequestBodyException;
+import com.example.authservice.exceptions.RecordAlreadyExistsException;
 import com.example.authservice.exceptions.RecordNotFoundException;
 import com.example.authservice.proto.UserProto;
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,6 +23,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {BadCredentialsException.class})
     public ResponseEntity<Map<String,String>> handleBadCredentialsException(BadCredentialsException e) {
         return makeExceptionResponseEntity(e, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(value = {InvalidRequestBodyException.class, MethodArgumentNotValidException.class, InvalidFormatException.class})
+    public ResponseEntity<Map<String,String>> handleInvalidRequestBodyException(Exception e) {
+        return makeExceptionResponseEntity(e, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {RecordAlreadyExistsException.class})
+    public ResponseEntity<Map<String,String>> catchRecordAlreadyExistsException(RecordAlreadyExistsException e) {
+        return makeExceptionResponseEntity(e, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(value = {RecordNotFoundException.class})

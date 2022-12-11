@@ -36,6 +36,7 @@ public class MessageServiceImpl implements MessageService {
     public Message addMessage(Message message, String authToken) {
         //TODO: check senderId
         webClient.fetchUser(message.getSenderId(), authToken);
+        System.out.println("User successfully fetched");
         return addMessageNoCheck(message);
     }
 
