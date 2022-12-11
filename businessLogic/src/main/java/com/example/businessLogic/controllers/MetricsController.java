@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/metrics")
+@RequestMapping("/api/businessLogicMetrics")
 @AllArgsConstructor
 public class MetricsController {
 

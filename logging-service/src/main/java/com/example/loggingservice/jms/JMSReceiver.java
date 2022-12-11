@@ -15,7 +15,9 @@ public class JMSReceiver {
 
     @JmsListener(destination = "LogsTopic", selector = "logLevel = 'ERROR' OR logLevel = 'WARN'")
     public void receiveMessage(LogMessageDTO dto) {
-        logService.save(new LogEntity(dto.getServiceTag(), dto.getMessage().getText(), dto.getMessage().getLevel()));
+        LogEntity logEntity = new LogEntity(dto.getServiceTag(), dto.getMessage().getText(), dto.getMessage().getLevel());
+        System.out.println(logEntity.getServiceTag() + ": " + logEntity.getMessage());
+        logService.save(logEntity);
     }
 
 }

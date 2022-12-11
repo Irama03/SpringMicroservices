@@ -15,11 +15,11 @@ spring:
         - id: chatService
           uri: lb://CHAT-SERVICE
           predicates:
-            - Path=/api/chats/**, /api/messages/**
+            - Path=/api/chats/**, /api/messages/**, /api/chatMetrics/**
         - id: businessLogicService
           uri: lb://BUSINESSLOGIC
           predicates:
-            - Path=/api/bookings/**, /api/clients/**, /api/lessors/**, /api/rooms/**, /api/data_for_statistics/**
+            - Path=/api/bookings/**, /api/clients/**, /api/lessors/**, /api/rooms/**, /api/data_for_statistics/**, /api/businessLogicMetrics/**
         - id: authService
           uri: lb://AUTH-SERVICE
           predicates:

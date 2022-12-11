@@ -1,8 +1,8 @@
 package com.example.authservice.logging;
 
 import com.example.authservice.models.LogMessage;
-//import com.example.authservice.services.JMSService;
-//import org.springframework.beans.factory.annotation.Autowired;
+import com.example.authservice.services.JMSService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -17,26 +17,29 @@ import java.util.Date;
 @Aspect
 public class GlobalLoggingAspect {
 
-    //@Autowired
-    //JMSService jmsService;
+    @Autowired
+    JMSService jmsService;
     private final Logger logger = LoggerFactory.getLogger(GlobalLoggingAspect.class);
 
     @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.controllers.*.*(..))")
     public void objectAfterAdvice(JoinPoint joinPoint, Object returnObject) {
-        logger.info(createLogMessage("INFO", joinPoint, returnObject).toString());
-        //jmsService.sendMessageToTopic(createLogMessage("INFO", joinPoint, returnObject));
+        LogMessage logMessage = createLogMessage("INFO", joinPoint, returnObject);
+        logger.info(logMessage.toString());
+        jmsService.sendMessageToTopic(logMessage);
     }
 
     @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.exceptions.handlers.GlobalExceptionHandler.handle*(..))")
     public void warnErrorAfterAdvice(JoinPoint joinPoint, Object returnObject) {
-        logger.warn(createLogMessage("WARN", joinPoint, returnObject).toString());
-        //jmsService.sendMessageToTopic(createLogMessage("WARN", joinPoint, returnObject));
+        LogMessage logMessage = createLogMessage("WARN", joinPoint, returnObject);
+        logger.warn(logMessage.toString());
+        jmsService.sendMessageToTopic(logMessage);
     }
 
     @AfterReturning(returning = "returnObject", value = "execution(* com.example.authservice.exceptions.handlers.GlobalExceptionHandler.catchOtherExceptions(..))")
     public void errorAfterAdvice(JoinPoint joinPoint, Object returnObject) {
-        logger.error(createLogMessage("ERROR", joinPoint, returnObject).toString());
-        //jmsService.sendMessageToTopic(createLogMessage("ERROR", joinPoint, returnObject));
+        LogMessage logMessage = createLogMessage("ERROR", joinPoint, returnObject);
+        logger.error(logMessage.toString());
+        jmsService.sendMessageToTopic(logMessage);
     }
 
     private LogMessage createLogMessage(String logLevel, JoinPoint joinPoint, Object returnObject) {
