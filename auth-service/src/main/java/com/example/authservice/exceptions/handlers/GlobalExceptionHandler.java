@@ -5,6 +5,7 @@ import com.example.authservice.exceptions.RecordNotFoundException;
 import com.example.authservice.proto.UserProto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,6 +24,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {RecordNotFoundException.class})
     public ResponseEntity<UserProto.Error> catchNotFoundExceptions(RecordNotFoundException e) {
         return makeProtoError(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<UserProto.Error> catchAccessDeniedExceptions(AccessDeniedException e) {
+        return makeProtoError(e, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(value = {Exception.class})

@@ -6,6 +6,7 @@ import com.example.authservice.services.UserService;
 import com.example.authservice.utils.JwtGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
@@ -31,6 +32,7 @@ public class UserController {
 
 
     @GetMapping(value = "/users/{id}", produces = "application/x-protobuf")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT','LESSOR')")
     public UserProto.User getUserById(@PathVariable Long id) {
         User user = userService.getById(id);
         return UserProto.User.newBuilder()
