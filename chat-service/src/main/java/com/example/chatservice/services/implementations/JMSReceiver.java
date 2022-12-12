@@ -15,7 +15,6 @@ import java.util.Set;
 import static com.example.chatservice.config.JMSConfig.BOOKING_QUEUE;
 
 @Service
-
 @RequiredArgsConstructor
 public class JMSReceiver {
 
