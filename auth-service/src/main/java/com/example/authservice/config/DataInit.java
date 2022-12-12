@@ -20,8 +20,8 @@ public class DataInit implements ApplicationRunner {
     }
     private void insertUsers() {
         User u1 = new User("hlib", "example1@gmail.com", "12345", UserRole.ADMIN);
-        User u2 = new User("vova", "example2@gmail.com", "11111", UserRole.CLIENT);
+        //User u2 = new User("vova", "example2@gmail.com", "11111", UserRole.CLIENT);
         userRepository.save(u1);
-        userRepository.save(u2);
+        //userRepository.save(u2);
     }
 }

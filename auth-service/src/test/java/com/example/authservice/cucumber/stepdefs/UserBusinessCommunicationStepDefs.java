@@ -29,8 +29,8 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserBusinessCommunicationStepDefs {
 
-    private static final String BASE_URL = "http://localhost:8080";
-    private static final String ADMIN_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZSI6IkFETUlOIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgyL2FwaS9sZXNzb3JzIiwiZXhwIjoxNjk5MjE2NDk3fQ.YJxdKh8th1uFcTAH11oCDaaeJRSElbSYgwWZS75VP54";
+    private static final String BASE_URL = "http://localhost:8082";
+    private static final String ADMIN_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJobGliIiwicm9sZSI6IkFETUlOIiwiZXhwIjoxNjcwODQ0NjI4LCJpYXQiOjE2NzA4NDQwMjgsImVtYWlsIjoiZXhhbXBsZTFAZ21haWwuY29tIn0.zO_hFa6PRIp492klJCTigwGB0mI3CLkOHMiFKzwdi2I";
     private final UserService userService;
     private final ObjectMapper objectMapper;
     private User client;
@@ -60,7 +60,7 @@ public class UserBusinessCommunicationStepDefs {
         String responseString = EntityUtils.toString(response.getEntity());
         JsonNode jsonResponse = objectMapper.readTree(responseString);
         Assertions.assertThat(jsonResponse.get("id").asLong()).isEqualTo(client.getId());
-        Assertions.assertThat(jsonResponse.get("name").toString()).isEqualTo(client.getName());
+        Assertions.assertThat(jsonResponse.get("name").toString()).isEqualTo("\"" + client.getName() + "\"");
     }
 
     @And("Lessor is created on BusinessLogic")
@@ -73,6 +73,6 @@ public class UserBusinessCommunicationStepDefs {
         String responseString = EntityUtils.toString(response.getEntity());
         JsonNode jsonResponse = objectMapper.readTree(responseString);
         Assertions.assertThat(jsonResponse.get("id").asLong()).isEqualTo(lessor.getId());
-        Assertions.assertThat(jsonResponse.get("name").toString()).isEqualTo(lessor.getName());
+        Assertions.assertThat(jsonResponse.get("name").toString()).isEqualTo("\"" + lessor.getName() + "\"");
     }
 }

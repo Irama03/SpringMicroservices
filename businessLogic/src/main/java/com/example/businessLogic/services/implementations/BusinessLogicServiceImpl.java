@@ -9,6 +9,8 @@ import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.transaction.Transactional;
+
 @GrpcService
 public class BusinessLogicServiceImpl extends BusinessLogicServiceGrpc.BusinessLogicServiceImplBase {
 
@@ -18,6 +20,7 @@ public class BusinessLogicServiceImpl extends BusinessLogicServiceGrpc.BusinessL
     private LessorRepository lessorRepository;
 
     @Override
+    @Transactional
     public void sendUser(com.example.businesslogic.proto.UserDto dto, StreamObserver<com.example.businesslogic.proto.ServiceReply> responseObserver) {
         com.example.businesslogic.proto.ServiceReply.Builder builder = com.example.businesslogic.proto.ServiceReply.newBuilder();
         try {
@@ -31,6 +34,7 @@ public class BusinessLogicServiceImpl extends BusinessLogicServiceGrpc.BusinessL
             builder.setSuccess(true);
         } catch (Exception e) {
             builder.setSuccess(false);
+            throw new RuntimeException(e.getMessage());
         } finally {
             System.out.println("----------------gRPC call processed----------------");
             responseObserver.onNext(builder.build());
